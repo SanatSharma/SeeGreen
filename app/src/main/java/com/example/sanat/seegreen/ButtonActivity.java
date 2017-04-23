@@ -14,8 +14,8 @@ import android.widget.ImageButton;
 
 public class ButtonActivity extends AppCompatActivity {
 
-    ImageButton vision_button;
-    ImageButton text_button;
+    Button vision_button;
+    Button text_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +27,8 @@ public class ButtonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_button);
 
 
-        vision_button = (ImageButton) findViewById(R.id.vision_button);
-        text_button = (ImageButton) findViewById(R.id.text_button);
+        vision_button = (Button) findViewById(R.id.vision_button);
+        text_button = (Button) findViewById(R.id.text_button);
 
         vision_button.setOnClickListener(new View.OnClickListener() {
             @Override

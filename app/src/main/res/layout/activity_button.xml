@@ -7,7 +7,21 @@
     tools:context="com.example.sanat.seegreen.ButtonActivity"
     android:background="#000">
 
-    <ImageButton
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:height="300dp"
+        android:width="200dp"
+        android:id="@+id/vision_button"
+        android:layout_centerHorizontal="true"
+        android:background="#fff"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_button"
+        android:layout_below="@+id/vision_button"/>
+ <!--   <ImageButton
         android:layout_width="300dp"
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
@@ -50,6 +64,6 @@
         android:textColor="#fff"
         android:textSize="20dp"/>
 
-
+-->
 
 </RelativeLayout>

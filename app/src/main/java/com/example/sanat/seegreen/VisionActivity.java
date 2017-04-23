@@ -446,7 +446,7 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
     public void surfaceChanged(SurfaceHolder holder, int format, int w,
                                int h) {
         if (mPreviewRunning) {
-            //mCamera.stopPreview();
+          //  mCamera.stopPreview();
         }
         Camera.Parameters p = mCamera.getParameters();
         List<Camera.Size> previewSizes = p.getSupportedPreviewSizes();
@@ -472,6 +472,8 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Log.v("Before preview", "Reaching here****************");
         mCamera.startPreview();
         mPreviewRunning = true;
 
