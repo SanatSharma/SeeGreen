@@ -11,4 +11,10 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="submit_button_string">Submit</string>
     <string name="title_activity_vision_server_result">VisionServerResult</string>
+
+    <string name="speech_prompt">Say something&#8230;</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="speech_string">Speech-To-Text</string>
+    <string name="title_activity_char_array_adapter">CharArrayAdapter</string>
 </resources>

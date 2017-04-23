@@ -35,6 +35,14 @@ public class ButtonActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        text_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), ChatActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
