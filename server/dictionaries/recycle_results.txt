@@ -1,0 +1,6 @@
+metal
+bottle
+plastic
+can
+fork
+spoon
