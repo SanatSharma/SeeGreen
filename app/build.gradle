@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.example.sanat.seegreen"
@@ -25,4 +25,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.0.0'
     compile 'com.clarifai.clarifai-api2:core:2.0.2'
     compile 'com.microsoft.projectoxford:vision:0.5.0'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
 }
