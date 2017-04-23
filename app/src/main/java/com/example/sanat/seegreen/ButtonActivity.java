@@ -3,17 +3,19 @@ package com.example.sanat.seegreen;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class ButtonActivity extends AppCompatActivity {
 
-    Button vision_button;
-    Button text_button;
+    ImageButton vision_button;
+    ImageButton text_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +27,13 @@ public class ButtonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_button);
 
 
-        vision_button = (Button) findViewById(R.id.vision_button);
-        text_button = (Button) findViewById(R.id.text_button);
+        vision_button = (ImageButton) findViewById(R.id.vision_button);
+        text_button = (ImageButton) findViewById(R.id.text_button);
 
         vision_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v("Vision_button", "Starting vision activity");
                 Intent i = new Intent (getApplicationContext(), VisionActivity.class);
                 startActivity(i);
             }

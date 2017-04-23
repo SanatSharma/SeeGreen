@@ -210,12 +210,17 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
         if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, 50);
 
+       Log.v("*************************", "HHHHHHHHEEEEEEEERRRRRRRRREEEEEE");
+
         if(mCamera != null) {
             mCamera.release();
             Log.v("HERRE", "reached here");
         }
 //        openCamera();
-            mCamera = Camera.open();
+        mCamera = Camera.open();
+
+        Log.v("Camera opened",mCamera.getParameters().getFlashMode());
+
         callAsynchronousTask();
     }
 
@@ -250,6 +255,7 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+
                         mCamera.takePicture(null,null, mPictureCallback);
                     }
                 });
@@ -589,9 +595,19 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
     @Override
     public void onRestart(){
         super.onRestart();
+        Log.v("Restart", "INside OnRestart");
         if (mCamera == null)
             mCamera.open();
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.v("Resume", "INside OnResume");
+        if (mCamera == null)
+            mCamera.open();
+    }
+
     @Override
     public void onPause(){
         super.onPause();
