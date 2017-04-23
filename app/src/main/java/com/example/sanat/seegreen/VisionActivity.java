@@ -539,8 +539,10 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
         super.onBackPressed();
 
         if (mCamera != null) {
+            Log.v("back press", "Inside back pressed");
+            continue_scheduling_task = false;
             mCamera.release();
-            mCamera = null;
+          //  mCamera = null;
         }
     }
     /**
@@ -597,9 +599,14 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
     public void onPause(){
         super.onPause();
         if(mCamera != null) {
-           Log.v("ONPAUSE", "INside on Pause");
-           mCamera.release();
-           mCamera = null;
+
+//           Log.v("ONPAUSE", "INside on Pause");
+//           mCamera.release();
+//           mCamera = null;
+
+            Log.v("ONPAUSE", "INside on Pause");
+            // mCamera.release();
+           // mCamera = null;
         }
 
     }

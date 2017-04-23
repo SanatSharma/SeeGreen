@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +18,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +28,7 @@
         </activity>
         <activity
             android:name=".ButtonActivity"
-            android:label="@string/title_activity_button" >
+            android:label="@string/title_activity_button">
         </activity>
         <activity
             android:name=".VisionActivity"
@@ -37,6 +39,10 @@
         <activity
             android:name=".VisionServerResult"
             android:label="@string/title_activity_vision_server_result" >
+        </activity>
+        <activity
+            android:name=".ChatActivity"
+            android:label="@string/title_activity_chat" >
         </activity>
     </application>
 
