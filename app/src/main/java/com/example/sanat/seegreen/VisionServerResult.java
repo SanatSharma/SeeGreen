@@ -2,21 +2,32 @@ package com.example.sanat.seegreen;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.sanat.seegreen.util.NetworkUtils;
+
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class VisionServerResult extends AppCompatActivity {
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +39,25 @@ public class VisionServerResult extends AppCompatActivity {
 
         Log.v("Server string", server_string);
 
-        try {
+        APIInterface apiService = APIClient.getClient().create(APIInterface.class);
+
+        Call<AnalyzeResponse> call = apiService.getAnalytics(server_string);
+        call.enqueue(new Callback<AnalyzeResponse>() {
+            @Override
+            public void onResponse(Call<AnalyzeResponse> call, Response<AnalyzeResponse> response) {
+                Log.v("Results", "Name = " + response.body().getName());
+                Log.v("Results", "Value = " + response.body().getValue());
+            }
+
+            @Override
+            public void onFailure(Call<AnalyzeResponse> call, Throwable t) {
+                Log.e("Results", t.toString());
+            }
+        });
+
+/*        try {
 
             Log.v("JSON", "Created Json string?");
-
-            Uri.Builder uri = new Uri.Builder() ;
-            uri.scheme("http").authority("63a2c555.ngrok.io").appendPath("api")
-                    .appendPath("analyze").appendQueryParameter("query", server_string).build();
-
             Log.v("URI", uri.toString());
 
             URL url = new URL(uri.toString());
@@ -56,7 +78,7 @@ public class VisionServerResult extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e("My App", "Could not parse malformed JSON: \"" + server_string + "\"");
-        }
+        }*/
 
     }
 

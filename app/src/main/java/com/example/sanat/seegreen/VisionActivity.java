@@ -188,6 +188,9 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
                 else {
                     continue_scheduling_task = false;
                     timer.cancel();
+                    mCamera.release();
+                    mCamera = null;
+
                     Log.v("INSIDE INTENT", "STOPPING TIMEREEERRE");
                     Intent intent = new Intent(getApplicationContext(), VisionServerResult.class);
                     intent.putExtra("vision_result", vision_result);
@@ -289,7 +292,7 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
 
                 String file_string = f.toString();
                 MediaType binary = MediaType.parse("application/octet-stream; charset=utf-8");
-                OkHttpClient httpclient = new OkHttpClient();
+                final OkHttpClient httpclient = new OkHttpClient();
                 RequestBody body = RequestBody.create(binary, data);
                /* final List<ClarifaiOutput<Concept>> predictionResults =
                         client.getDefaultModels().generalModel() // You can also do Clarifai.getModelByID("id") to get custom models
@@ -325,16 +328,16 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
 
                         if(result.size()!= 0) {
                             Log.v("JSON STR", result.toString());
-                            runOnUiThread(new Runnable() {
+                            /*runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-
-//                                    result.setText(resultJson);
+                                    // result.setText(resultJson);
                                 }
-                            });
+                            });*/
                         }
                         else
                             Log.v("JSON STR", "Empty result");
+                        response.close();
                     }
                 });
 
@@ -517,7 +520,7 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
             Log.v("Surface Destroyed", "INSIDE SURFACE DESTROYED");
             mCamera.release();
             continue_scheduling_task = false;
-           // mCamera = null;
+            mCamera = null;
         }
     }
 
@@ -579,7 +582,7 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
             Log.v("Stop", "INSIDE STOP");
             mCamera.release();
             continue_scheduling_task = false;
-            //mCamera = null;
+            mCamera = null;
         }
         super.onStop();
     }
@@ -595,8 +598,8 @@ public class VisionActivity extends Activity implements SurfaceHolder.Callback{
         super.onPause();
         if(mCamera != null) {
            Log.v("ONPAUSE", "INside on Pause");
-            // mCamera.release();
-           // mCamera = null;
+           mCamera.release();
+           mCamera = null;
         }
 
     }
