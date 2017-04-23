@@ -1,9 +1,8 @@
 package com.example.sanat.seegreen;
 
-/**
- * Created by Sanat on 4/22/2017.
- */
+
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.sanat.seegreen.R;
 import com.example.sanat.seegreen.util.ChatMessage;
 
 import java.util.ArrayList;
@@ -21,8 +19,15 @@ import java.util.List;
 
 class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
 
+    /* savedInstanceState constants */
+    private final String SAVED_CHAT_ITEM_COUNT = "SAVED_CHAT_ITEM_COUNT";
+    private final String SAVED_CHAT_ITEM_ALIGN = "SAVED_CHAT_ITEM";
+    private final String SAVED_CHAT_ITEM_MESSAGE = "SAVED_CHAT_ITEM";
+
     private TextView chatText;
-    private List<ChatMessage> chatMessageList = new ArrayList<ChatMessage>();
+    private static List<ChatMessage> chatMessageList = new ArrayList<ChatMessage>();
+    private static ChatMessage first = new ChatMessage(ChatMessage.CHAT_LEFT_ALIGN,
+            "Hello! What would you like to sort today?");
     private Context context;
 
     @Override
@@ -46,11 +51,14 @@ class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
     }
 
     public int getCount() {
-        return this.chatMessageList.size();
+        return this.chatMessageList.size() + 1;
     }
 
     public ChatMessage getItem(int index) {
-        return this.chatMessageList.get(index);
+        if(index == 0){
+            return first;
+        }
+        return this.chatMessageList.get(index - 1);
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -66,4 +74,7 @@ class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
         chatText.setText(chatMessageObj.message);
         return row;
     }
+
+
+
 }

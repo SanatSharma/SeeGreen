@@ -1,8 +1,7 @@
 package com.example.sanat.seegreen.util;
 
-/**
- * Created by Sanat on 4/22/2017.
- */
+
+import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 
@@ -11,14 +10,24 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class ChatBot {
     private static final String TAG = "CHATBOT";
+
+    /* savedInstanceState constants */
+    private static final String SAVED_BOT_SCRATCH_COUNT = "SAVED_STATE_BOT_SCRATCH_COUNT";
+    private static final String SAVED_BOT_STATE = "SAVED_STATE_BOT_STATE";
+    private static final String SAVED_BOT_SCRATCH_ITEM = "SAVED_STATE_BOT_SCRATCH_ITEM";
+
+    /* bits for state */
     static final int WAITING_FOR_ITEM = 1;
     static final int WAITING_FOR_CATEGORY_INTENT = 1 << 1;
     static final int WAITING_FOR_CATEGORY = 1 << 2;
@@ -26,6 +35,7 @@ public class ChatBot {
     static final int ERR = 1 << 4;
     static final int CONFIRMATION = 1 << 5;
     static final int NEEDS_CONFIRMATION = WAITING_FOR_CATEGORY | WAITING_FOR_ITEM;
+
     static int state = WAITING_FOR_ITEM;
     static LinkedList<String> scratch = new LinkedList<String>();
     static HashMap<String, String> cache = new HashMap<String, String>();
@@ -126,7 +136,10 @@ public class ChatBot {
                 Pair<Integer, String> response = null;
                 try {
                     response = new Pair<Integer, String>(200, "");
-                    response = httpGet("http://63a2c555.ngrok.io/api/analyze?query=\"" + item + "\"");
+                    String encodedSentencee = null;
+
+                        encodedSentencee = URLEncoder.encode(item, "UTF-8");
+                    response = httpGet("http://63a2c555.ngrok.io/api/analyze?query=\"" + encodedSentencee + "\"");
 
                 } catch (Exception ex) {
                     state |= ERR;
@@ -137,11 +150,11 @@ public class ChatBot {
                         JSONObject object = new JSONObject(response.second);
                         item = object.getString("name");
                         value = object.getString("value");
-                        Log.v("CHAT RESPONSE!", value);
-
                     } catch (Exception ex) {
                         state |= ERR;
                     }
+                } else {
+                    state |= ERR;
                 }
             }
             if ((state & ERR) == 0){
@@ -149,7 +162,8 @@ public class ChatBot {
                 StringBuilder sb = new StringBuilder();
                 scratch.push(item);
                 scratch.push(value);
-                sb.append(item);
+                sb.append((char)(item.charAt(0) - 0x20));
+                sb.append(item.substring(1));
                 sb.append(" huh?  That item is ");
                 sb.append(value);
                 sb.append(".   Do you believe this to be correct?");
@@ -193,7 +207,7 @@ public class ChatBot {
             result = "Where do you think this item should sort this item? " +
                     "Recyclable, Compostable, or Trash";
         } else {
-            state = WAITING_FOR_ITEM | WAITING_FOR_CATEGORY_INTENT;
+            state ^= WAITING_FOR_ITEM | WAITING_FOR_CATEGORY_INTENT;
             result = "Okay, maybe some other time. Give me another item to evaluate";
             scratch.pop();
             scratch.pop();
@@ -207,8 +221,10 @@ public class ChatBot {
         Log.d(TAG, "URL: " + urlStr);
         URL url = new URL(urlStr);
         URLConnection con = url.openConnection();
+        con.setReadTimeout(5000);
         HttpURLConnection conn = (HttpURLConnection) con;
 
+        conn.setReadTimeout(5000);
         //Error
         int responseCode = conn.getResponseCode();
         Log.d(TAG, "responseCode = " + responseCode);
@@ -261,6 +277,7 @@ public class ChatBot {
                 String name = scratch.pop();
                 StringBuilder sb = new StringBuilder();
                 sb.append("Thank you!  ");
+                name = (char)(name.charAt(0)-0x20) + name.substring(1);
                 sb.append(name);
                 sb.append(" is now updated to be ");
                 sb.append(value);
@@ -300,5 +317,24 @@ public class ChatBot {
         Log.d(TAG, "Edit difference between " + a + " and " + b + " is " + distance[a.length()][b.length()]);
 
         return distance[a.length()][b.length()];
+    }
+
+    public static void saveState(Bundle savedInstanceState){
+        savedInstanceState.putInt(SAVED_BOT_SCRATCH_COUNT, scratch.size());
+        savedInstanceState.putInt(SAVED_BOT_STATE, state);
+        Iterator<String> iterator = scratch.iterator();
+        int i = 0;
+        while(iterator.hasNext())
+            savedInstanceState.putString(SAVED_BOT_SCRATCH_ITEM + i, iterator.next());
+
+    }
+
+    public static void restoreState(Bundle savedInstanceState){
+        state = savedInstanceState.getInt(SAVED_BOT_STATE);
+        int scratch_count = savedInstanceState.getInt(SAVED_BOT_SCRATCH_COUNT);
+        for(int i = 0; i < scratch_count; i++){
+            scratch.add(savedInstanceState.getString(SAVED_BOT_SCRATCH_ITEM + i));
+        }
+
     }
 }

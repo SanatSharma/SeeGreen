@@ -41,7 +41,7 @@
 
     <Button
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:textColor="#fff"
         android:background="#152"
         android:text="@string/submit_button_string"

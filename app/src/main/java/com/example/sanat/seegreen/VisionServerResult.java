@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -13,8 +16,8 @@ import retrofit2.Response;
 
 public class VisionServerResult extends AppCompatActivity {
 
-
-
+    TextView result;
+    Button finito;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,17 @@ public class VisionServerResult extends AppCompatActivity {
 
         Intent intent = getIntent();
         String server_string = intent.getExtras().getString("vision_result");
+
+        result = (TextView) findViewById(R.id.server_result);
+        finito = (Button) findViewById(R.id.finish_button);
+
+        finito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), ButtonActivity.class);
+                startActivity(i);
+            }
+        });
 
         Log.v("Server string", server_string);
 
@@ -34,6 +48,11 @@ public class VisionServerResult extends AppCompatActivity {
             public void onResponse(Call<AnalyzeResponse> call, Response<AnalyzeResponse> response) {
                 Log.v("Results", "Name = " + response.body().getName());
                 Log.v("Results", "Value = " + response.body().getValue());
+
+                String name = response.body().getName();
+                name = name.substring(0,1).toUpperCase() + name.substring(1);
+
+                result.setText(name + ": " + response.body().getValue());
             }
 
             @Override
