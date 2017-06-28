@@ -1,6 +1,5 @@
 # SeeGreen
 
-Inspiration
 Every year millions of dollars are wasted in improper waste management, which is an easy problem to tackle at the user level. By making an easy way for users to manage their waste properly, we can greatly reduce damage. We at SeaGreen wish to spread awareness about this topic and have created a unique, innovative solution utilizing computer vision, AI, and natural language processing.
 
 What it does
